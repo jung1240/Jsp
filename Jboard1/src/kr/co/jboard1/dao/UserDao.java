@@ -26,7 +26,6 @@ public class UserDao {
 	private ResultSet         rs = null;
 	
 	public int selectCountUser(String uid) throws Exception {
-		
 		conn = DBConfig.getInstance().getConnection();
 		stmt = conn.createStatement();
 		
@@ -34,21 +33,43 @@ public class UserDao {
 		rs = stmt.executeQuery(sql);
 		
 		int count = 0;
+		
 		if(rs.next()) {
 			count = rs.getInt(1);
 		}
+		
 		close();
+		
 		return count;
 	}
+	
+	public int selectCountNick(String nick) throws Exception {
+		conn = DBConfig.getInstance().getConnection();
+		stmt = conn.createStatement();
+		
+		String sql = "SELECT COUNT(*) FROM `JBOARD_MEMBER` WHERE `nick`='"+nick+"';";
+		rs = stmt.executeQuery(sql);
+		
+		int count = 0;
+		
+		if(rs.next()) {
+			count = rs.getInt(1);
+		}
+		
+		close();
+		
+		return count;
+	}
+	
 	
 	public void insertUser(MemberBean mb) throws Exception {
 		
 		conn = DBConfig.getInstance().getConnection();
 		
-		// 3ï¿½Ü°ï¿½ - SQL ï¿½ï¿½ï¿½à°´Ã¼ ï¿½ï¿½ï¿½ï¿½
+		// 3´Ü°è - SQL ½ÇÇà°´Ã¼ »ý¼º
 		stmt = conn.createStatement();
 		
-		// 4ï¿½Ü°ï¿½ - SQL ï¿½ï¿½ï¿½ï¿½
+		// 4´Ü°è - SQL ½ÇÇà
 		String sql  = "INSERT INTO `JBOARD_MEMBER` SET ";
 			   sql += "`uid`='"+mb.getUid()+"',";
 			   sql += "`pass`=PASSWORD('"+mb.getPass()+"'),"; 
@@ -64,30 +85,29 @@ public class UserDao {
 		
 		stmt.executeUpdate(sql);		   
 		
-		// 5ï¿½Ü°ï¿½ - ï¿½ï¿½ï¿½ï¿½ï¿½ Ã³ï¿½ï¿½(SELECTï¿½ï¿½ ï¿½ï¿½ï¿½)
+		// 5´Ü°è - °á°ú¼Â Ã³¸®(SELECTÀÏ °æ¿ì)
 		
-		// 6ï¿½Ü°ï¿½ - ï¿½ï¿½ï¿½ï¿½ï¿½Íºï¿½ï¿½Ì½ï¿½ ï¿½ï¿½ï¿½ï¿½
+		// 6´Ü°è - µ¥ÀÌÅÍº£ÀÌ½º Á¾·á
 		close();
 	}
-	
 	public MemberBean selectUser(String uid, String pass) throws Exception {
 		
 		conn = DBConfig.getInstance().getConnection();
 		
-		// 3ï¿½Ü°ï¿½
+		// 3´Ü°è
 		stmt = conn.createStatement();
 		
-		// 4ï¿½Ü°ï¿½
+		// 4´Ü°è
 		String sql  = "SELECT * FROM `JBOARD_MEMBER` ";
 		       sql += "WHERE `uid`='"+uid+"' AND `pass`=PASSWORD('"+pass+"');";
 		
 		rs = stmt.executeQuery(sql);
 		
-		// 5ï¿½Ü°ï¿½
+		// 5´Ü°è
 		MemberBean mb = null;
 		
 		if(rs.next()){
-			// È¸ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½
+			// È¸¿øÀÌ ¸ÂÀ» °æ¿ì
 			mb = new MemberBean();
 			mb.setUid(rs.getString(1));
 			mb.setPass(rs.getString(2));
@@ -103,12 +123,11 @@ public class UserDao {
 			mb.setRdate(rs.getString(12));
 		}
 		
-		// 6ï¿½Ü°ï¿½
+		// 6´Ü°è
 		close();
 		
 		return mb;
 	}
-	
 	public void selectUsers() throws Exception {}
 	public void updateUser() throws Exception {}
 	public void deleteUser() throws Exception {}
@@ -117,14 +136,14 @@ public class UserDao {
 		
 		conn = DBConfig.getInstance().getConnection();
 		
-		// 3ï¿½Ü°ï¿½ - SQL ï¿½ï¿½ï¿½à°´Ã¼ ï¿½ï¿½ï¿½ï¿½
+		// 3´Ü°è - SQL ½ÇÇà°´Ã¼ »ý¼º
 		stmt = conn.createStatement();
 		
-		// 4ï¿½Ü°ï¿½ - SQL ï¿½ï¿½ï¿½ï¿½
+		// 4´Ü°è - SQL ½ÇÇà
 		String sql = "SELECT * FROM `JBOARD_TERMS`;";
 		rs = stmt.executeQuery(sql);
 		
-		// 5ï¿½Ü°ï¿½ - ï¿½ï¿½ï¿½ï¿½ï¿½ Ã³ï¿½ï¿½(SELECTï¿½ï¿½ ï¿½ï¿½ï¿½)
+		// 5´Ü°è - °á°ú¼Â Ã³¸®(SELECTÀÏ °æ¿ì)
 		TermsBean tb = new TermsBean();
 		
 		if(rs.next()){
@@ -135,7 +154,7 @@ public class UserDao {
 			tb.setPrivacy(privacy);
 		}
 		
-		// 6ï¿½Ü°ï¿½ - ï¿½ï¿½ï¿½ï¿½ï¿½Íºï¿½ï¿½Ì½ï¿½ ï¿½ï¿½ï¿½ï¿½
+		// 6´Ü°è - µ¥ÀÌÅÍº£ÀÌ½º Á¾·á
 		close();
 		
 		return tb;

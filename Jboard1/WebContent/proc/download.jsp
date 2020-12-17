@@ -35,18 +35,16 @@
 	
 	while(true){
 		int data = bis.read();
+		
 		if(data == -1){
 			break;
 		}
-		
 		bos.write(data);
 	}
 	
 	bos.close();
 	bis.close();
 %>
-
-
 
 
 

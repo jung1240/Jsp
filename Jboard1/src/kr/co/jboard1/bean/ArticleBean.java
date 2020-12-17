@@ -13,7 +13,7 @@ public class ArticleBean {
 	private String regip;
 	private String rdate;
 	
-	// ï¿½ß°ï¿½ï¿½Êµï¿½
+	// Ãß°¡ÇÊµå
 	private String nick;
 
 	private int fileSeq;
@@ -63,7 +63,6 @@ public class ArticleBean {
 		this.parent = parent;
 	}
 	public void setParent(String parent) {
-		
 		this.parent = Integer.parseInt(parent);
 	}
 	public int getComment() {

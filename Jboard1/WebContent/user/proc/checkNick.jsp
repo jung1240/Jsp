@@ -4,9 +4,9 @@
 <%
 	request.setCharacterEncoding("utf-8");
 
-	String uid = request.getParameter("uid");
+	String nick = request.getParameter("nick");
 
-	int count = UserDao.getInstance().selectCountUser(uid);
+	int count = UserDao.getInstance().selectCountNick(nick);
 	
 	// JSON 출력
 	//String json = "{\"result\": "+count+"}";

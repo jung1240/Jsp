@@ -15,20 +15,20 @@ import kr.co.jboard1.db.DBConfig;
 
 public class ArticleDao {
 	
-	// Ïã±Í∏ÄÌÜ§ Í∞ùÏ≤¥
+	// ΩÃ±€≈Ê ∞¥√º
 	private static ArticleDao instance = new ArticleDao();
 	private ArticleDao() {}	
 	public static ArticleDao getInstance() {
 		return instance;
 	}
 	
-	// DBÏ†ëÏÜç Í¥ÄÎ†® Î©§Î≤ÑÍ∞ùÏ≤¥ 
+	// DB¡¢º” ∞¸∑√ ∏‚πˆ∞¥√º 
 	private Connection        conn = null;
 	private PreparedStatement psmt = null;
 	private Statement         stmt = null;
 	private ResultSet         rs   = null;
 	
-	// Î¶¨Ïä§Ìä∏ ÌéòÏù¥ÏßÄÏ≤òÎ¶¨ Í¥ÄÎ†® Î©îÏÑúÎìú
+	// ∏ÆΩ∫∆Æ ∆‰¿Ã¡ˆ√≥∏Æ ∞¸∑√ ∏ﬁº≠µÂ
 	public int[] getPageGroup(int currentPg, int lastPgNum) {
 		int groupCurrent = (int)Math.ceil(currentPg / 10.0);
 		int groupStart   = (groupCurrent - 1) * 10 + 1;
@@ -67,25 +67,25 @@ public class ArticleDao {
 	}
 	public int selectCountArticle() throws Exception {
 		conn = DBConfig.getInstance().getConnection();
-		// 3Îã®Í≥Ñ
+		// 3¥‹∞Ë
 		stmt = conn.createStatement();
 		
-		// 4Îã®Í≥Ñ
+		// 4¥‹∞Ë
 		String sql = "SELECT COUNT(*) FROM `JBOARD_ARTICLE` WHERE `parent`=0";
 		rs = stmt.executeQuery(sql);
 		
-		// 5Îã®Í≥Ñ
+		// 5¥‹∞Ë
 		int total = 0;
 		if(rs.next()){
 			total = rs.getInt(1);
 		}
 		
-		// 6Îã®Í≥Ñ
+		// 6¥‹∞Ë
 		close();
 		return total;
 	}
 	
-	// Ï≤®Î∂ÄÌååÏùº Í¥ÄÎ†® Î©îÏÑúÎìú
+	// √∑∫Œ∆ƒ¿œ ∞¸∑√ ∏ﬁº≠µÂ
 	public void updateFileDownload(String seq) throws Exception {
 		conn = DBConfig.getInstance().getConnection();
 		stmt = conn.createStatement();
@@ -135,15 +135,15 @@ public class ArticleDao {
 		return fb;
 	}
 	
-	// Í≤åÏãúÍ∏Ä Í¥ÄÎ†® Î©îÏÑúÎìú
+	// ∞‘Ω√±€ ∞¸∑√ ∏ﬁº≠µÂ
 	public int insertArticle(ArticleBean ab) throws Exception {
 		
 		conn = DBConfig.getInstance().getConnection();
 		
-		// 3Îã®Í≥Ñ
+		// 3¥‹∞Ë
 		stmt = conn.createStatement();
 		
-		// 4Îã®Í≥Ñ
+		// 4¥‹∞Ë
 		String sql  = "INSERT INTO `JBOARD_ARTICLE` SET ";
 			   sql += "`title`='"+ab.getTitle()+"',";
 			   sql += "`content`='"+ab.getContent()+"',"; 
@@ -153,8 +153,8 @@ public class ArticleDao {
 			   sql += "`rdate`=NOW();"; 
 			    
 		stmt.executeUpdate(sql);
-		// 5Îã®Í≥Ñ
-		// 6Îã®Í≥Ñ
+		// 5¥‹∞Ë
+		// 6¥‹∞Ë
 		close();
 		
 		return selectMaxSeq();
@@ -180,10 +180,10 @@ public class ArticleDao {
 		
 		conn = DBConfig.getInstance().getConnection();
 		
-		// 3Îã®Í≥Ñ
+		// 3¥‹∞Ë
 		stmt = conn.createStatement();
 		
-		// 4Îã®Í≥Ñ
+		// 4¥‹∞Ë
 		String sql  = "SELECT a.*, b.seq, b.oldName, b.download FROM `JBOARD_ARTICLE` AS a ";
 		       sql += "LEFT JOIN `JBOARD_FILE` AS b ";
 		       sql += "ON a.seq = b.parent ";
@@ -191,7 +191,7 @@ public class ArticleDao {
 		
 		rs = stmt.executeQuery(sql);
 		
-		// 5Îã®Í≥Ñ
+		// 5¥‹∞Ë
 		ArticleBean ab = new ArticleBean();
 		
 		if(rs.next()){
@@ -211,7 +211,7 @@ public class ArticleDao {
 			ab.setDownload(rs.getInt(14));
 		}
 		
-		// 6Îã®Í≥Ñ
+		// 6¥‹∞Ë
 		close();
 		
 		return ab;
@@ -220,9 +220,9 @@ public class ArticleDao {
 		
 		conn = DBConfig.getInstance().getConnection();
 		
-		// 3Îã®Í≥Ñ
+		// 3¥‹∞Ë
 		stmt = conn.createStatement();
-		// 4Îã®Í≥Ñ
+		// 4¥‹∞Ë
 		String sql  = "SELECT a.*, b.nick FROM `JBOARD_ARTICLE` AS a ";
 			   sql += "JOIN `JBOARD_MEMBER` AS b ";
 			   sql += "ON a.uid = b.uid ";	
@@ -232,7 +232,7 @@ public class ArticleDao {
 		       
 		rs = stmt.executeQuery(sql);
 		
-		// 5Îã®Í≥Ñ
+		// 5¥‹∞Ë
 		List<ArticleBean> articles = new ArrayList<>();
 		
 		while(rs.next()){
@@ -255,7 +255,7 @@ public class ArticleDao {
 			articles.add(ab);
 		}
 		
-		// 6Îã®Í≥Ñ
+		// 6¥‹∞Ë
 		close();
 		
 		return articles;
@@ -264,26 +264,36 @@ public class ArticleDao {
 		
 		conn = DBConfig.getInstance().getConnection();
 		
-		// 3Îã®Í≥Ñ
+		// 3¥‹∞Ë
 		String sql  = "UPDATE `JBOARD_ARTICLE` SET `title`=?, `content`=? WHERE `seq`=?";
 		psmt = conn.prepareStatement(sql);
 		psmt.setString(1, title);
 		psmt.setString(2, content);
 		psmt.setString(3, seq);
 		
-		// 4Îã®Í≥Ñ
+		// 4¥‹∞Ë
 		psmt.executeUpdate();
 		
-		// 5Îã®Í≥Ñ
-		// 6Îã®Í≥Ñ
+		// 5¥‹∞Ë
+		// 6¥‹∞Ë
 		close();
+	}
+	public void updateArticleComment(String parent) throws Exception {
+		conn = DBConfig.getInstance().getConnection();
+		stmt = conn.createStatement();
+		
+		String sql  = "UPDATE `JBOARD_ARTICLE` SET `comment`=`comment`-1 ";
+		       sql += "WHERE `seq`="+parent;
+		       
+		stmt.executeUpdate(sql);
+		close();		
 	}
 	public void updateHit(String seq) throws Exception {
 		conn = DBConfig.getInstance().getConnection();
 		
 		stmt = conn.createStatement();
 		
-		// 4Îã®Í≥Ñ
+		// 4¥‹∞Ë
 		String sqlUpdate = "UPDATE `JBOARD_ARTICLE` SET `hit`=`hit`+1 WHERE `seq`="+seq;
 		stmt.executeUpdate(sqlUpdate);
 		
@@ -292,30 +302,31 @@ public class ArticleDao {
 	public void deleteArticle(String seq) throws Exception {
 		conn = DBConfig.getInstance().getConnection();
 		
-		// 3Îã®Í≥Ñ
+		// 3¥‹∞Ë
 		String sql = "DELETE FROM `JBOARD_ARTICLE` WHERE `seq`=?";
 		psmt = conn.prepareStatement(sql);
 		psmt.setString(1, seq);
 		
-		// 4Îã®Í≥Ñ
+		// 4¥‹∞Ë
 		psmt.executeUpdate();
 		
-		// 5Îã®Í≥Ñ
-		// 6Îã®Í≥Ñ
+		// 5¥‹∞Ë
+		// 6¥‹∞Ë
 		close();
 	}
 	
-	// ÎåìÍ∏Ä Í¥ÄÎ†® Î©îÏÑúÎìú
-	public void updateCommentCount(String seq) throws Exception{
+	// ¥Ò±€ ∞¸∑√ ∏ﬁº≠µÂ
+	public void updateCommentCount(String seq) throws Exception {
 		conn = DBConfig.getInstance().getConnection();
 		stmt = conn.createStatement();
 		
 		String sql  = "UPDATE `JBOARD_ARTICLE` SET `comment`=`comment`+1 ";
-			   sql += "WHERE `seq`="+seq;
+		       sql += "WHERE `seq`="+seq;
+		       
 		stmt.executeUpdate(sql);
 		close();
 	}
-	public void insertComment(ArticleBean ab) throws Exception {
+	public void insertComment(ArticleBean ab)  throws Exception {
 		conn = DBConfig.getInstance().getConnection();
 		stmt = conn.createStatement();
 	
@@ -330,16 +341,18 @@ public class ArticleDao {
 		close();		       
 	}
 	
-	public void selectComment() throws Exception {}
+	public void selectComment()  throws Exception {}
+	
 	public List<ArticleBean> selectComments(String parent) throws Exception {
 		conn = DBConfig.getInstance().getConnection();
 		stmt = conn.createStatement();
 		
 		String sql  = "SELECT a.*, b.nick FROM `JBOARD_ARTICLE` AS a ";
-			   sql +="JOIN `JBOARD_MEMBER` AS b ";
-			   sql +="ON a.uid=b.uid ";
-			   sql +="WHERE `parent`="+parent+" ";
-			   sql +="ORDER BY `seq` ASC;";
+			   sql += "JOIN `JBOARD_MEMBER` AS b "; 
+			   sql += "ON a.uid=b.uid "; 
+		       sql += "WHERE `parent`="+parent+" ";
+		       sql += "ORDER BY `seq` ASC;";
+		
 		rs = stmt.executeQuery(sql);
 		
 		List<ArticleBean> comments = new ArrayList<>();
@@ -355,20 +368,30 @@ public class ArticleDao {
 			ab.setHit(rs.getInt(8));
 			ab.setUid(rs.getString(9));
 			ab.setRegip(rs.getString(10));
-			ab.setRdate(rs.getString(11));
-			ab.setNick(rs.getString(12));
+			ab.setRdate(rs.getString(11));	
+			ab.setNick(rs.getString(12));	
 			
 			comments.add(ab);
 		}
-		
 		close();
-		return comments;
-		
+		return comments;		
 	}
-	public void updateComment() throws Exception {}
-	public void deleteComment() throws Exception {}
+	public void updateComment()  throws Exception {}
 	
-	// DB Access Í∞ùÏ≤¥ Ìï¥Ï†ú
+	public void deleteComment(String seq)  throws Exception {
+		
+		conn = DBConfig.getInstance().getConnection();
+		stmt = conn.createStatement();
+		
+		String sql = "DELETE FROM `JBOARD_ARTICLE` WHERE `seq`="+seq;
+		stmt.executeUpdate(sql);
+		
+		// 5¥‹∞Ë
+		// 6¥‹∞Ë
+		close();
+	}
+	
+	// DB Access ∞¥√º «ÿ¡¶
 	public void close() throws Exception {
 		if(rs   != null) rs.close();		
 		if(stmt != null) stmt.close();
@@ -376,3 +399,9 @@ public class ArticleDao {
 		if(conn != null) conn.close();	
 	}
 }
+
+
+
+
+
+

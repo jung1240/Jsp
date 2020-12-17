@@ -1,3 +1,4 @@
+<%@page import="kr.co.jboard1.bean.MemberBean"%>
 <%@page import="java.util.List"%>
 <%@page import="kr.co.jboard1.dao.ArticleDao"%>
 <%@page import="kr.co.jboard1.bean.ArticleBean"%>
@@ -10,6 +11,10 @@
 	// 파라미터 수신
 	request.setCharacterEncoding("UTF-8");
 	String seq = request.getParameter("seq");
+	
+	// 현재 로그인한 회원 아이디 구하기
+	MemberBean mb = (MemberBean) session.getAttribute("smember");
+	String uid = mb.getUid();
 	
 	// 조회수 업데이터
 	ArticleDao.getInstance().updateHit(seq);
@@ -26,6 +31,25 @@
     <meta charset="UTF-8">
     <title>글보기</title>
     <link rel="stylesheet" href="/Jboard1/css/style.css"/>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script>
+    	$(function(){
+    		
+    		// 원글, 댓글 삭제
+    		$('.btnDelete, .cmtDelete').click(function(){
+    			
+    			var result = confirm('정말 삭제 하시겠습니까?');
+    			
+    			if(result){
+    				return true;    				
+    			}else{
+    				return false;
+    			}
+    		});
+    		
+    		
+    	});
+    </script>
 </head>
 <body>
     <div id="wrapper">
@@ -62,26 +86,27 @@
             <section class="commentList">
                 <h3>댓글목록</h3>
                 <% 
-                if(ab.getComment() > 0){ 
-                
-                	for(ArticleBean comment : comments){
-                
+                	if(ab.getComment() > 0){
+                		
+                		for(ArticleBean comment : comments){
                 %>
-                <article class="comment">
-                    <span>
-                        <span><%= comment.getNick() %></span>
-                        <span><%= comment.getRdate().substring(2, 10) %></span>
-                    </span>
-                    <textarea name="comment" readonly><%= comment.getContent() %></textarea>
-                    <div>
-                        <a href="#">삭제</a>
-                        <a href="#">수정</a>
-                    </div>
-                </article>
+		                <article class="comment">
+		                    <span>
+		                        <span><%= comment.getNick() %></span>
+		                        <span><%= comment.getRdate().substring(2, 10) %></span>
+		                    </span>
+		                    <textarea name="comment" readonly><%= comment.getContent() %></textarea>
+		                    <% if(uid.equals(comment.getUid())){ %>
+		                    <div>
+		                        <a href="/Jboard1/proc/deleteComment.jsp?seq=<%= comment.getSeq() %>&parent=<%= comment.getParent() %>" class="cmtDelete">삭제</a>
+		                        <a href="#">수정</a>
+		                    </div>
+		                    <% } %>
+		                </article>
                 <%
-	                	}
+                		}
                 	}else{ 
-                	%>
+                %>
                 <p class="empty">
                     등록된 댓글이 없습니다.
                 </p>
